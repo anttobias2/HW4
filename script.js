@@ -80,17 +80,39 @@ function clearStatusClass(element){
 
 const questions = [
     {
-        question: 'What is 2 + 2',
+        question: 'Who was the 2021 Formula 1 World Champion?',
         answers: [
-            {text: '4', correct: true},
-            {text: '22', correct: false}
+            {text: 'Max Verstappen', correct: true},
+            {text: 'Lewis Hamilton', correct: false},
+            {text: 'Sergio Perez', correct: false},
+            {text: 'Sebastian Vettel', correct: false}
         ]
     },
     {
-        question: 'What is 2 + 2',
+        question: 'Who holds the NBA single season record for Assists?',
         answers: [
-            {text: '4', correct: true},
-            {text: '22', correct: false}
+            {text: 'John Stockton', correct: true},
+            {text: 'Russell Westbrook', correct: false},
+            {text: 'Chris Paul', correct: false},
+            {text: 'Oscar Robertson', correct: false}
+        ]
+    },
+    {
+    question: 'Who holds the MLB single season record for homeruns?',
+        answers: [
+            {text: 'Barry Bonds', correct: true},
+            {text: 'Babe Ruth', correct: false},
+            {text: 'Hank Aaron', correct: false},
+            {text: 'Ken Griffey Jr.', correct: false}
+        ]
+    },
+    {
+        question: 'What year were the OKC Thunder established',
+        answers: [
+            {text: 'John Stockton', correct: true},
+            {text: 'Russell Westbrook', correct: false},
+            {text: 'Chris Paul', correct: false},
+            {text: 'Oscar Robertson', correct: false}
         ]
     }
 ]
