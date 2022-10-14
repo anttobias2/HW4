@@ -3,21 +3,36 @@ const nextButton = document.getElementById('next-btn')
 const questionContainerElement = document.getElementById('question-container')
 const questionElement = document.getElementById('question')
 const answerButtonsElement = document.getElementById('answer-buttons')
+const backButton = document.getElementById('back-btn')
 
 let shuffledQuestions, currentQuestionIndex
 
-startButton.addEventListener('click', startGame)
+startButton.addEventListener('click', startGame);
+
 nextButton.addEventListener('click', () => {
     currentQuestionIndex++
     setNextQuestion()
 })
+
+backButton.addEventListener('click', () => {
+    currentQuestionIndex--;
+    setPreviousQuestion();
+});
+
 function startGame(){
     console.log('Started')
     startButton.classList.add('hide')
     shuffledQuestions = questions.sort(() => Math.random() - .5)
     currentQuestionIndex = 0
     questionContainerElement.classList.remove('hide')
+    removeFlashCard()
+    document.getElementById("welcome-message").remove()
     setNextQuestion()
+}
+
+function setNextQuestion(){
+    resetState()
+    showQuestion(shuffledQuestions[currentQuestionIndex])
 }
 
 function setNextQuestion(){
@@ -42,9 +57,11 @@ function showQuestion(question){
 function resetState(){
     clearStatusClass(document.body)
     nextButton.classList.add('hide')
+    backButton.classList.add('hide')
     while (answerButtonsElement.firstChild){
         answerButtonsElement.removeChild(answerButtonsElement.firstChild)
     }
+    removeFlashCard()
 }
 
 function selectAnswer(e){
@@ -54,13 +71,20 @@ function selectAnswer(e){
     Array.from(answerButtonsElement.children).forEach(button => {
         setStatusClass(button, button.dataset.correct)
     })
-    if (shuffledQuestions.length > currentQuestionIndex + 1){
+    if (shuffledQuestions.length > currentQuestionIndex + 1 & currentQuestionIndex != 0){
+        nextButton.classList.remove('hide');
+        backButton.classList.remove('hide')
+    }
+    else if (shuffledQuestions.length > currentQuestionIndex + 1){
         nextButton.classList.remove('hide')
     }
     else{
         startButton.innerText = 'Restart'
         startButton.classList.remove('hide')
     }
+    let newCard = document.createElement("div")
+            newCard.id = "flashcard";
+    createFlashCard()
 }
 
 function setStatusClass(element, correct){
@@ -76,6 +100,20 @@ function setStatusClass(element, correct){
 function clearStatusClass(element){
     element.classList.remove('correct')
     element.classList.remove('wrong')
+}
+
+function removeFlashCard(){
+    if (document.getElementById("flashcard") != null){
+        document.getElementById("flashcard").remove();
+    }
+}
+
+function createFlashCard(){
+    if (document.getElementById("flashcard") == null){
+        let newCard = document.createElement("div")
+            newCard.id = "flashcard";
+            document.getElementById("flash-container").appendChild(newCard);
+    }
 }
 
 const questions = [

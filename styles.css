@@ -23,13 +23,18 @@ body {
     text-align: center;
 }
 
-#container {
+#flashcard {
     text-align: center;
     border: 2px dashed blue;
     background-color: cornsilk;
     height: 175px;
     width: 90%;
     margin: 15px;
+    padding: 15px;
+}
+
+#flash-container {
+    width: 90%;
     padding: 15px;
 }
 
@@ -80,19 +85,26 @@ body.wrong{
     --hue: var(--hue-wrong);
 }
 
-.start-btn, .next-btn{
+.start-btn, .next-btn, .back-btn{
     font-size: 1.5rem;
     font-weight: bold;
     padding: 10px 20px;
+    margin: 10px;
 }
 
 .controls{
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin: 10px;
 }
 
 .hide{
     display: none;
+}
+
+#welcome-message{
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
 }
