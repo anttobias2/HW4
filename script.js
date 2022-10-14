@@ -1,17 +1,19 @@
-const startButton = document.getElementById('start-btn')
-const nextButton = document.getElementById('next-btn')
-const questionContainerElement = document.getElementById('question-container')
-const questionElement = document.getElementById('question')
-const answerButtonsElement = document.getElementById('answer-buttons')
-const backButton = document.getElementById('back-btn')
+const startButton = document.getElementById('start-btn');
+const nextButton = document.getElementById('next-btn');
+const questionContainerElement = document.getElementById('question-container');
+const questionElement = document.getElementById('question');
+const answerButtonsElement = document.getElementById('answer-buttons');
+const backButton = document.getElementById('back-btn');
+const restartButton = document.getElementById('restart-btn');
+const flashcardElement = document.getElementById('flashcard');
 
-let shuffledQuestions, currentQuestionIndex
+let shuffledQuestions, currentQuestionIndex;
 
 startButton.addEventListener('click', startGame);
 
 nextButton.addEventListener('click', () => {
-    currentQuestionIndex++
-    setNextQuestion()
+    currentQuestionIndex++;
+    setNextQuestion();
 })
 
 backButton.addEventListener('click', () => {
@@ -19,15 +21,21 @@ backButton.addEventListener('click', () => {
     setPreviousQuestion();
 });
 
+restartButton.addEventListener('click', () => {
+    currentQuestionIndex = 0;
+    setNextQuestion();
+    restartButton.classList.add('hide');
+});
+
 function startGame(){
-    console.log('Started')
-    startButton.classList.add('hide')
-    shuffledQuestions = questions.sort(() => Math.random() - .5)
-    currentQuestionIndex = 0
-    questionContainerElement.classList.remove('hide')
-    removeFlashCard()
-    document.getElementById("welcome-message").remove()
-    setNextQuestion()
+    console.log('Started');
+    startButton.classList.add('hide');
+    shuffledQuestions = questions.sort(() => Math.random() - .5);
+    currentQuestionIndex = 0;
+    questionContainerElement.classList.remove('hide');
+    removeFlashCard();
+    document.getElementById("welcome-message").remove();
+    setNextQuestion();
 }
 
 function setNextQuestion(){
@@ -35,7 +43,7 @@ function setNextQuestion(){
     showQuestion(shuffledQuestions[currentQuestionIndex])
 }
 
-function setNextQuestion(){
+function setPreviousQuestion(){
     resetState()
     showQuestion(shuffledQuestions[currentQuestionIndex])
 }
@@ -79,12 +87,11 @@ function selectAnswer(e){
         nextButton.classList.remove('hide')
     }
     else{
-        startButton.innerText = 'Restart'
-        startButton.classList.remove('hide')
+        restartButton.classList.remove('hide')
     }
     let newCard = document.createElement("div")
             newCard.id = "flashcard";
-    createFlashCard()
+    createFlashCard(flashcards[currentQuestionIndex])
 }
 
 function setStatusClass(element, correct){
@@ -108,12 +115,14 @@ function removeFlashCard(){
     }
 }
 
-function createFlashCard(){
+function createFlashCard(text){
     if (document.getElementById("flashcard") == null){
         let newCard = document.createElement("div")
-            newCard.id = "flashcard";
-            document.getElementById("flash-container").appendChild(newCard);
+        newCard.id = "flashcard";
+        newCard.innerText = text;
+        document.getElementById("flash-container").appendChild(newCard);
     }
+
 }
 
 const questions = [
@@ -248,4 +257,22 @@ const questions = [
             {text: 'Alpine', correct: false}
         ]
     }
+]
+
+const flashcards = [
+    "Max Verstappen won the champtionship in a very controversial way in 2021. his main rival was Lewis Hamilton",
+    "John Stockton holds the single-season assist record by nearly 5,000 assists. The next closes is LeBron James at 21345 assists.",
+    "Barry Bonds holds the single-season homerun record, however he was using PED's at the time. Many people consider his record invalid.",
+    "The diameter is 18 inches. This is just large enough to let 2 basketballs get stuck in the hoop.",
+    "The average golf ball has 336, the best ball is Titleist Pro V1.",
+    "The Indianapoilis 500 happens every year on Memorial Day.",
+    "An Olympic swimming pool is 50 meters long. That is a very large pool!",
+    "There are 9 players on the baseball field at once. The positions go as follows:",
+    "It is called a shuttlecock. I always thought it was called a birdie",
+    "A football is 1 pound. Unless you are Tom Brady in the Superbowl.",
+    "The 3 point line is 23 feet 9 inches.",
+    "Kareem Abdul-Jabbar is the all time leader in points.",
+    "The away team bats first in baseball. This gives the home team the last chance to bat if they are losing the game.",
+    "Soccer is considered to be the King of sports. It has tens of millions more viewers than all other sports.",
+    "Renault is no longer in Formula 1. Their last year they had Daniel Riccardo and another driver. "
 ]
