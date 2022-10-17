@@ -30,12 +30,18 @@ restartButton.addEventListener('click', () => {
 function startGame(){
     console.log('Started');
     startButton.classList.add('hide');
-    shuffledQuestions = questions.sort(() => Math.random() - .5);
+    randomVal = getRandom();
+    shuffledQuestions = questions.sort(randomVal);
+    flashcards = questions.flashcard
     currentQuestionIndex = 0;
     questionContainerElement.classList.remove('hide');
     removeFlashCard();
     document.getElementById("welcome-message").remove();
     setNextQuestion();
+}
+
+function getRandom(){
+    Math.random() - .5;
 }
 
 function setNextQuestion(){
@@ -89,9 +95,8 @@ function selectAnswer(e){
     else{
         restartButton.classList.remove('hide')
     }
-    let newCard = document.createElement("div")
-            newCard.id = "flashcard";
-    createFlashCard(flashcards[currentQuestionIndex])
+    
+    createFlashCard()
 }
 
 function setStatusClass(element, correct){
@@ -115,11 +120,12 @@ function removeFlashCard(){
     }
 }
 
-function createFlashCard(text){
+function createFlashCard(){
     if (document.getElementById("flashcard") == null){
+        console.log("No flashcard");
         let newCard = document.createElement("div")
         newCard.id = "flashcard";
-        newCard.innerText = text;
+        newCard.innerText = questions[currentQuestionIndex].flashcard;
         document.getElementById("flash-container").appendChild(newCard);
     }
 
@@ -133,7 +139,8 @@ const questions = [
             {text: 'Lewis Hamilton', correct: false},
             {text: 'Sergio Perez', correct: false},
             {text: 'Sebastian Vettel', correct: false}
-        ]
+        ],
+        flashcard: "Max Verstappen won the champtionship in a very controversial way in 2021. his main rival was Lewis Hamilton"
     },
     {
         question: 'Who holds the NBA single season record for Assists?',
@@ -142,7 +149,8 @@ const questions = [
             {text: 'Russell Westbrook', correct: false},
             {text: 'Chris Paul', correct: false},
             {text: 'Oscar Robertson', correct: false}
-        ]
+        ],
+        flashcard: "John Stockton holds the single-season assist record by nearly 5,000 assists. The next closes is LeBron James at 21345 assists."
     },
     {
         question: 'Who holds the MLB single season record for homeruns?',
@@ -151,7 +159,8 @@ const questions = [
             {text: 'Babe Ruth', correct: false},
             {text: 'Hank Aaron', correct: false},
             {text: 'Ken Griffey Jr.', correct: false}
-    ]
+        ],
+        flashcard: "Barry Bonds holds the single-season homerun record, however he was using PED's at the time. Many people consider his record invalid."
     },
     {
         question: 'What is the diameter of a basketball hoop?',
@@ -160,7 +169,9 @@ const questions = [
             {text: '16 inches', correct: false},
             {text: '24 inches', correct: false},
             {text: '20 inches', correct: false}
-        ]
+        ],
+        flashcard: "The diameter is 18 inches. This is just large enough to let 2 basketballs get stuck in the hoop.",
+
     },
     {
         question: 'How many dimples does the average golf ball have?',
@@ -169,7 +180,8 @@ const questions = [
             {text: '296', correct: false},
             {text: '378', correct: false},
             {text: '402', correct: false}
-        ]
+        ],
+        flashcard: "The average golf ball has 336, the best ball is Titleist Pro V1."
     },
     {
         question: 'What sporting event is held every year on memorial day?',
@@ -178,7 +190,8 @@ const questions = [
             {text: 'MLB Opening Day', correct: false},
             {text: 'NBA Allstar Game', correct: false},
             {text: 'The SuperBowl', correct: false}
-        ]
+        ],
+        flashcard: "The Indianapoilis 500 happens every year on Memorial Day."
     },
     {
         question: 'How long is an Olympic-sized swimming pool?',
@@ -187,7 +200,8 @@ const questions = [
             {text: '45 meters', correct: false},
             {text: '48 meters', correct: false},
             {text: '52 meters', correct: false}
-        ]
+        ],
+        flashcard: "An Olympic swimming pool is 50 meters long. That is a very large pool!"
     },
     {
         question: 'How many defensive players are in the field during a baseball game?',
@@ -196,14 +210,16 @@ const questions = [
             {text: '8', correct: false},
             {text: '10', correct: false},
             {text: '11', correct: false}
-        ]
+        ],
+        flashcard: "There are 9 players on the baseball field at once. The positions go as follows:"
     },
     {
         question: 'What is the object hit in Badminton called?',
         answers: [
             {text: 'Shuttlecock', correct: true},
             {text: 'Badminton Ball', correct: false}
-        ]
+        ],
+        flashcard: "It is called a shuttlecock. I always thought it was called a birdie"
     },
     {
         question: 'How much does an NFL football weigh?',
@@ -212,7 +228,8 @@ const questions = [
             {text: '1.2 pounds', correct: false},
             {text: '0.8 pounds', correct: false},
             {text: '1.5 pounds', correct: false}
-        ]
+        ],
+        flashcard: "A football is 1 pound. Unless you are Tom Brady in the Superbowl."
     },
     {
         question: 'How far is the NBA 3-point line?',
@@ -221,7 +238,8 @@ const questions = [
             {text: '23 feet', correct: false},
             {text: '24 feet 6 inches', correct: false},
             {text: '25 feet', correct: false}
-        ]
+        ],
+        flashcard: "The 3 point line is 23 feet 9 inches."
     },
     {
         question: 'Who is the all time NBA points leader?',
@@ -230,14 +248,16 @@ const questions = [
             {text: 'LeBron James', correct: false},
             {text: 'Michael Jordan', correct: false},
             {text: 'Tim Duncan', correct: false}
-        ]
+        ],
+        flashcard: "Kareem Abdul-Jabbar is the all time leader in points."
     },
     {
         question: 'Which team bats first in baseball?',
         answers: [
             {text: 'Away Team', correct: true},
             {text: 'Home Team', correct: false}
-        ]
+        ],
+        flashcard: "The away team bats first in baseball. This gives the home team the last chance to bat if they are losing the game."
     },
     {
         question: 'What sport is considered the \"King of sports\"?',
@@ -246,7 +266,8 @@ const questions = [
             {text: 'Baseball', correct: false},
             {text: 'Basketball', correct: false},
             {text: 'Football', correct: false}
-        ]
+        ],
+        flashcard: "Soccer is considered to be the King of sports. It has tens of millions more viewers than all other sports."
     },
     {
         question: 'Which of the following is no longer a Formula 1 team?',
@@ -255,24 +276,7 @@ const questions = [
             {text: 'Red Bull', correct: false},
             {text: 'Mercedes', correct: false},
             {text: 'Alpine', correct: false}
-        ]
+        ],
+        flashcard: "Renault is no longer in Formula 1. Their last year they had Daniel Riccardo and another driver."
     }
-]
-
-const flashcards = [
-    "Max Verstappen won the champtionship in a very controversial way in 2021. his main rival was Lewis Hamilton",
-    "John Stockton holds the single-season assist record by nearly 5,000 assists. The next closes is LeBron James at 21345 assists.",
-    "Barry Bonds holds the single-season homerun record, however he was using PED's at the time. Many people consider his record invalid.",
-    "The diameter is 18 inches. This is just large enough to let 2 basketballs get stuck in the hoop.",
-    "The average golf ball has 336, the best ball is Titleist Pro V1.",
-    "The Indianapoilis 500 happens every year on Memorial Day.",
-    "An Olympic swimming pool is 50 meters long. That is a very large pool!",
-    "There are 9 players on the baseball field at once. The positions go as follows:",
-    "It is called a shuttlecock. I always thought it was called a birdie",
-    "A football is 1 pound. Unless you are Tom Brady in the Superbowl.",
-    "The 3 point line is 23 feet 9 inches.",
-    "Kareem Abdul-Jabbar is the all time leader in points.",
-    "The away team bats first in baseball. This gives the home team the last chance to bat if they are losing the game.",
-    "Soccer is considered to be the King of sports. It has tens of millions more viewers than all other sports.",
-    "Renault is no longer in Formula 1. Their last year they had Daniel Riccardo and another driver. "
 ]
