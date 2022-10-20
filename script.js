@@ -1,3 +1,11 @@
+/*
+    Anthony Tobias
+    HW4
+    CPSC 332
+    This is my js file for the flashcard assignment
+*/
+
+// declare constants
 const startButton = document.getElementById('start-btn');
 const nextButton = document.getElementById('next-btn');
 const questionContainerElement = document.getElementById('question-container');
@@ -7,8 +15,16 @@ const backButton = document.getElementById('back-btn');
 const restartButton = document.getElementById('restart-btn');
 const flashcardElement = document.getElementById('flashcard');
 
-let shuffledQuestions, currentQuestionIndex;
+// declare variables
+let questionList, currentQuestionIndex;
+let hour = 00;
+let minute = 00;
+let second = 00;
+let count = 00;
+    
 
+
+// add event listeners and their functions on click
 startButton.addEventListener('click', startGame);
 
 nextButton.addEventListener('click', () => {
@@ -25,33 +41,53 @@ restartButton.addEventListener('click', () => {
     currentQuestionIndex = 0;
     setNextQuestion();
     restartButton.classList.add('hide');
+    resetWatch();
 });
+
 
 function startGame(){
     console.log('Started');
     startButton.classList.add('hide');
-    randomVal = getRandom();
-    shuffledQuestions = questions.sort(randomVal);
-    flashcards = questions.flashcard
+    checkRandom();
+    checkTimedSession();
+    removeOptions();
     currentQuestionIndex = 0;
     questionContainerElement.classList.remove('hide');
     removeFlashCard();
-    document.getElementById("welcome-message").remove();
     setNextQuestion();
 }
 
-function getRandom(){
-    Math.random() - .5;
+// Function that checks form to see if they user selected random
+function checkRandom(){
+    let shuffleCards = document.querySelector("#shuffle");
+    if (shuffleCards.checked){
+        questionList = questions.sort(() => Math.random() - .5);
+        console.log("Randomized");
+    }
+    else{
+        questionList = questions;
+        console.log("Not randomized");
+    }
+}
+
+function checkTimedSession(){
+    let timed = document.querySelector("#timed");
+    if(timed.checked){
+        createStopWatch();
+        stopWatch();
+        console.log("timed session")
+    }
+
 }
 
 function setNextQuestion(){
     resetState()
-    showQuestion(shuffledQuestions[currentQuestionIndex])
+    showQuestion(questionList[currentQuestionIndex])
 }
 
 function setPreviousQuestion(){
     resetState()
-    showQuestion(shuffledQuestions[currentQuestionIndex])
+    showQuestion(questionList[currentQuestionIndex])
 }
 
 function showQuestion(question){
@@ -85,11 +121,11 @@ function selectAnswer(e){
     Array.from(answerButtonsElement.children).forEach(button => {
         setStatusClass(button, button.dataset.correct)
     })
-    if (shuffledQuestions.length > currentQuestionIndex + 1 & currentQuestionIndex != 0){
+    if (questionList.length > currentQuestionIndex + 1 & currentQuestionIndex != 0){
         nextButton.classList.remove('hide');
         backButton.classList.remove('hide')
     }
-    else if (shuffledQuestions.length > currentQuestionIndex + 1){
+    else if (questionList.length > currentQuestionIndex + 1){
         nextButton.classList.remove('hide')
     }
     else{
@@ -123,12 +159,92 @@ function removeFlashCard(){
 function createFlashCard(){
     if (document.getElementById("flashcard") == null){
         console.log("No flashcard");
-        let newCard = document.createElement("div")
+        let newCard = document.createElement("div");
         newCard.id = "flashcard";
         newCard.innerText = questions[currentQuestionIndex].flashcard;
         document.getElementById("flash-container").appendChild(newCard);
     }
 
+}
+
+function removeOptions(){
+    if (document.getElementById("options") != null){
+        document.getElementById("options").remove();
+    }
+}
+
+function createStopWatch(){
+    if (document.getElementById("min") == null){
+        console.log("No minute");
+        let newMin = document.createElement("span");
+        newMin.id = "min";
+        newMin.innerText = "00 "
+
+        let newText = document.createElement("span");
+        newText.id = "text";
+        newText.innerText = "Min "
+
+        document.getElementById("time").appendChild(newMin);
+        document.getElementById("time").appendChild(newText);
+    }
+    if (document.getElementById("sec") == null){
+        console.log("No second");
+        let newSec = document.createElement("span");
+        newSec.id = "sec";
+        newSec.innerText = "00"
+        let newText = document.createElement("span");
+        newText.id = "text";
+        newText.innerText = "Sec"
+
+        document.getElementById("time").appendChild(newSec);
+        document.getElementById("time").appendChild(newText);
+    }
+}
+
+function stopWatch() {
+    count++;
+
+    if (count == 100) {
+        second++;
+        count = 0;
+    }
+
+    if (second == 60) {
+        minute++;
+        second = 0;
+    }
+
+    let minString = minute;
+    let secString = second;
+
+    if (minute < 10) {
+        minString = "0" + minString;
+    }
+
+    if (second < 10) {
+        secString = "0" + secString;
+    }
+
+    document.getElementById('min').innerHTML = minString;
+    document.getElementById('sec').innerHTML = secString;
+    setTimeout(stopWatch, 10);
+    if (second % 30 == 0 || second % 30 == 2){
+        document.getElementById("time").style.setProperty("background-color", "red");
+    }
+
+    else{
+        document.getElementById("time").style.setProperty("background-color", "white");
+    }
+}
+
+function resetWatch(){
+    hour = 0;
+    minute = 0;
+    second = 0;
+    count = 0;
+    document.getElementById('hr').innerHTML = "00";
+    document.getElementById('min').innerHTML = "00";
+    document.getElementById('sec').innerHTML = "00";
 }
 
 const questions = [

@@ -15,6 +15,16 @@
     
 
     <div class="container">
+        <div id="options">
+            <form>
+                <label for="shuffle">Shuffle Cards:</label>
+                <input type="checkbox" name="shuffle" id="shuffle">
+                <label for="timed">Timed Session:</label>
+                <input type="checkbox" name="timed" id="timed">
+                <label for="remove">Remove Correct from Deck:</label>
+                <input type="checkbox" name="remove" id="remove">
+            </form>
+        </div>
         <div id="question-container" class="hide">
             <div id="question">Question</div>
             <div id="answer-buttons" class="btn-grid">
@@ -25,11 +35,13 @@
             </div>
         </div>
         <div class="controls">
-            <div id="welcome-message">This is Anthony's sports quiz. Good luck!</div>
             <button id="start-btn" class="start-btn btn">Start</button>
             <button id="back-btn" class="back-btn btn hide">Back</button>
             <button id="next-btn" class="next-btn btn hide">Next</button>
             <button id="restart-btn" class="restart-btn btn hide">Restart</button>
+        </div>
+        <div id="time">
+            
         </div>
     </div>
 </body>
