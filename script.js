@@ -16,7 +16,10 @@ const restartButton = document.getElementById('restart-btn');
 const flashcardElement = document.getElementById('flashcard');
 
 // declare variables
-let questionList, currentQuestionIndex;
+let questionList, copyQuestionList, currentQuestionIndex, correct;
+let shuffle = false;
+let removeCards = false;
+let stopwatch = false;
 let hour = 00;
 let minute = 00;
 let second = 00;
@@ -28,28 +31,48 @@ let count = 00;
 startButton.addEventListener('click', startGame);
 
 nextButton.addEventListener('click', () => {
-    currentQuestionIndex++;
+    if (removeCards && correct){
+        removeQuestion();
+        console.log("removing question")
+    }
+    else{
+        currentQuestionIndex++;
+        console.log("Adding one to index");
+    }
     setNextQuestion();
 })
 
+// even listener for back button
 backButton.addEventListener('click', () => {
+    if (removeCards && correct){
+        removeQuestion();
+        console.log("removing question")
+    }
     currentQuestionIndex--;
     setPreviousQuestion();
 });
 
+// event listener for restart button
 restartButton.addEventListener('click', () => {
+    removeQuestion();
     currentQuestionIndex = 0;
+    if (shuffle && removeCards){
+        questionList = questions.sort(() => Math.random() - .5);
+        console.log(questionList);
+        console.log("restarted with new deck");
+    }
     setNextQuestion();
     restartButton.classList.add('hide');
     resetWatch();
 });
 
-
+// Start game
 function startGame(){
     console.log('Started');
     startButton.classList.add('hide');
     checkRandom();
     checkTimedSession();
+    checkRemove();
     removeOptions();
     currentQuestionIndex = 0;
     questionContainerElement.classList.remove('hide');
@@ -62,7 +85,9 @@ function checkRandom(){
     let shuffleCards = document.querySelector("#shuffle");
     if (shuffleCards.checked){
         questionList = questions.sort(() => Math.random() - .5);
+        console.log(questionList);
         console.log("Randomized");
+        shuffle = true;
     }
     else{
         questionList = questions;
@@ -70,28 +95,40 @@ function checkRandom(){
     }
 }
 
+// check if the session is to be timed
 function checkTimedSession(){
     let timed = document.querySelector("#timed");
     if(timed.checked){
+        stopwatch = true;
         createStopWatch();
         stopWatch();
-        console.log("timed session")
+        console.log("timed session");
     }
-
 }
 
+// check if user wants to remove correct answers
+function checkRemove(){
+    let remove = document.querySelector("#remove");
+    if(remove.checked){
+        removeCards = true;
+        console.log("remove cards if correct");
+    }
+}
+
+
 function setNextQuestion(){
-    resetState()
-    showQuestion(questionList[currentQuestionIndex])
+    resetState();
+    showQuestion(questionList[currentQuestionIndex]);
 }
 
 function setPreviousQuestion(){
-    resetState()
-    showQuestion(questionList[currentQuestionIndex])
+    resetState();
+    showQuestion(questionList[currentQuestionIndex]);
 }
 
+// show user the current question
 function showQuestion(question){
-    questionElement.innerText = question.question
+    questionElement.innerText = question.question;
     question.answers.forEach(answer => {
         const button = document.createElement('button')
         button.innerText = answer.text
@@ -104,6 +141,7 @@ function showQuestion(question){
     });
 }
 
+// reset the state for the question and other features
 function resetState(){
     clearStatusClass(document.body);
     nextButton.classList.add('hide');
@@ -111,13 +149,16 @@ function resetState(){
     while (answerButtonsElement.firstChild){
         answerButtonsElement.removeChild(answerButtonsElement.firstChild);
     }
-    removeFlashCard()
+    removeFlashCard();
 }
 
+// actions by page after answer is selected
 function selectAnswer(e){
     const selectedButton = e.target;
-    const correct = selectedButton.dataset.correct;
+    correct = selectedButton.dataset.correct;
+    console.log(correct);
     setStatusClass(document.body, correct);
+    createFlashCard();
     Array.from(answerButtonsElement.children).forEach(button => {
         setStatusClass(button, button.dataset.correct);
     })
@@ -131,32 +172,33 @@ function selectAnswer(e){
     else{
         restartButton.classList.remove('hide');
     }
-    
-    createFlashCard()
 }
 
+// set status whether a question is right or wrong
 function setStatusClass(element, correct){
     clearStatusClass(element);
     if (correct){
         element.classList.add('correct');
-        removeQuestion();
     }
     else{
         element.classList.add('wrong');
     }
 }
 
+// clears the question status class
 function clearStatusClass(element){
     element.classList.remove('correct');
     element.classList.remove('wrong');
 }
 
+// Dynamically removes flashcard
 function removeFlashCard(){
     if (document.getElementById("flashcard") != null){
         document.getElementById("flashcard").remove();
     }
 }
 
+// Dynamically creates flashacarda associated with question
 function createFlashCard(){
     if (document.getElementById("flashcard") == null){
         console.log("No flashcard");
@@ -168,12 +210,14 @@ function createFlashCard(){
 
 }
 
+// Removes options from starting page
 function removeOptions(){
     if (document.getElementById("options") != null){
         document.getElementById("options").remove();
     }
 }
 
+// dynamically creates the stop watch
 function createStopWatch(){
     if (document.getElementById("min") == null){
         console.log("No minute");
@@ -202,6 +246,7 @@ function createStopWatch(){
     }
 }
 
+// how the stopwatch functions
 function stopWatch() {
     count++;
 
@@ -238,26 +283,29 @@ function stopWatch() {
     }
 }
 
+// resets stopwath at 0
 function resetWatch(){
-    hour = 0;
-    minute = 0;
-    second = 0;
-    count = 0;
-    document.getElementById('hr').innerHTML = "00";
-    document.getElementById('min').innerHTML = "00";
-    document.getElementById('sec').innerHTML = "00";
+    if (stopwatch){
+        minute = 0;
+        second = 0;
+        count = 0;
+        document.getElementById('min').innerHTML = "00";
+        document.getElementById('sec').innerHTML = "00";
+    }
 }
 
+// remove a question from the question list
 function removeQuestion(){
     correctAnswers.push(questionList[currentQuestionIndex]);
-    //questionList.splice(currentQuestionIndex);
+    questionList.splice(currentQuestionIndex, 1);
     if (currentQuestionIndex > questionList.length){
         currentQuestionIndex--;
     }
     console.log(currentQuestionIndex);
-    console.log(correctAnswers[currentQuestionIndex])
+    console.log(correctAnswers)
 }
 
+// Array with questions
 const questions = [
     {
         question: 'Who was the 2021 Formula 1 World Champion?',
@@ -267,7 +315,7 @@ const questions = [
             {text: 'Sergio Perez', correct: false},
             {text: 'Sebastian Vettel', correct: false}
         ],
-        flashcard: "Max Verstappen won the champtionship in a very controversial way in 2021. his main rival was Lewis Hamilton"
+        flashcard: "Max Verstappen won the champtionship in a very controversial way in 2021. His main rival was Lewis Hamilton who he beat by 8 points."
     },
     {
         question: 'Who holds the NBA single season record for Assists?',
@@ -277,7 +325,7 @@ const questions = [
             {text: 'Chris Paul', correct: false},
             {text: 'Oscar Robertson', correct: false}
         ],
-        flashcard: "John Stockton holds the single-season assist record by nearly 5,000 assists. The next closes is LeBron James at 21345 assists."
+        flashcard: "John Stockton holds the single-season assist record by over 3,500 assists. The next closes is Jason Kidd at 12,091 assists. The closest active player is Chris Paul who is third on the leaderboard with 10,986 assists."
     },
     {
         question: 'Who holds the MLB single season record for homeruns?',
@@ -287,7 +335,7 @@ const questions = [
             {text: 'Hank Aaron', correct: false},
             {text: 'Ken Griffey Jr.', correct: false}
         ],
-        flashcard: "Barry Bonds holds the single-season homerun record, however he was using PED's at the time. Many people consider his record invalid."
+        flashcard: "Barry Bonds holds the single-season homerun record, however he was using PED's at the time. Many people consider his record invalid. The player with the second most is Hank Aaron with 755 homeruns. He has made it very clear that he is extremely against steroids."
     },
     {
         question: 'What is the diameter of a basketball hoop?',
@@ -308,7 +356,7 @@ const questions = [
             {text: '378', correct: false},
             {text: '402', correct: false}
         ],
-        flashcard: "The average golf ball has 336, the best ball is Titleist Pro V1."
+        flashcard: "The average golf ball has 336, the best ball in golf currently is the Titleist Pro V1."
     },
     {
         question: 'What sporting event is held every year on memorial day?',
@@ -318,7 +366,7 @@ const questions = [
             {text: 'NBA Allstar Game', correct: false},
             {text: 'The SuperBowl', correct: false}
         ],
-        flashcard: "The Indianapoilis 500 happens every year on Memorial Day."
+        flashcard: "The Indianapoilis 500 happens every year on Memorial Day. The extended weekend makes it more enjoyable for spectators."
     },
     {
         question: 'How long is an Olympic-sized swimming pool?',
@@ -338,7 +386,7 @@ const questions = [
             {text: '10', correct: false},
             {text: '11', correct: false}
         ],
-        flashcard: "There are 9 players on the baseball field at once. The positions go as follows:"
+        flashcard: "There are 9 players on the baseball field at once. The positions go as follows: Pitcher, Catcher, First Base, Second Base, Third Base, Shortstop, Left Field, Center Field, Right Field."
     },
     {
         question: 'What is the object hit in Badminton called?',
@@ -346,7 +394,7 @@ const questions = [
             {text: 'Shuttlecock', correct: true},
             {text: 'Badminton Ball', correct: false}
         ],
-        flashcard: "It is called a shuttlecock. I always thought it was called a birdie"
+        flashcard: "It is called a shuttlecock. I always thought it was called a birdie!"
     },
     {
         question: 'How much does an NFL football weigh?',
@@ -366,7 +414,7 @@ const questions = [
             {text: '24 feet 6 inches', correct: false},
             {text: '25 feet', correct: false}
         ],
-        flashcard: "The 3 point line is 23 feet 9 inches."
+        flashcard: "The 3 point line is 23 feet 9 inches. Which is 4 feet further than college. This is why so many college players struggle shooting threes once they make it to the NBA."
     },
     {
         question: 'Who is the all time NBA points leader?',
@@ -376,7 +424,7 @@ const questions = [
             {text: 'Michael Jordan', correct: false},
             {text: 'Tim Duncan', correct: false}
         ],
-        flashcard: "Kareem Abdul-Jabbar is the all time leader in points."
+        flashcard: "Kareem Abdul-Jabbar is the all time leader in points. He is about 1,200 points ahead of Lebron James who is closing in quickly. He will most likely pass him by the end of the 2022-2023 season."
     },
     {
         question: 'Which team bats first in baseball?',
@@ -394,7 +442,7 @@ const questions = [
             {text: 'Basketball', correct: false},
             {text: 'Football', correct: false}
         ],
-        flashcard: "Soccer is considered to be the King of sports. It has tens of millions more viewers than all other sports."
+        flashcard: "Soccer is considered to be the King of sports. About 250 million people play the sport world wide. For the world cup, there often well over 1 billion viewers."
     },
     {
         question: 'Which of the following is no longer a Formula 1 team?',
@@ -404,8 +452,9 @@ const questions = [
             {text: 'Mercedes', correct: false},
             {text: 'Alpine', correct: false}
         ],
-        flashcard: "Renault is no longer in Formula 1. Their last year they had Daniel Riccardo and another driver."
+        flashcard: "Renault is no longer in Formula 1. They left in 2020 after they had a number of years struggling for success. Their last year they had Daniel Riccardo and Estaban Ocon as their drivers."
     }
 ]
 
+// new array for correct answers that have been removed
 var correctAnswers = [];
