@@ -105,49 +105,50 @@ function showQuestion(question){
 }
 
 function resetState(){
-    clearStatusClass(document.body)
-    nextButton.classList.add('hide')
-    backButton.classList.add('hide')
+    clearStatusClass(document.body);
+    nextButton.classList.add('hide');
+    backButton.classList.add('hide');
     while (answerButtonsElement.firstChild){
-        answerButtonsElement.removeChild(answerButtonsElement.firstChild)
+        answerButtonsElement.removeChild(answerButtonsElement.firstChild);
     }
     removeFlashCard()
 }
 
 function selectAnswer(e){
-    const selectedButton = e.target
-    const correct = selectedButton.dataset.correct
-    setStatusClass(document.body, correct)
+    const selectedButton = e.target;
+    const correct = selectedButton.dataset.correct;
+    setStatusClass(document.body, correct);
     Array.from(answerButtonsElement.children).forEach(button => {
-        setStatusClass(button, button.dataset.correct)
+        setStatusClass(button, button.dataset.correct);
     })
     if (questionList.length > currentQuestionIndex + 1 & currentQuestionIndex != 0){
         nextButton.classList.remove('hide');
-        backButton.classList.remove('hide')
+        backButton.classList.remove('hide');
     }
     else if (questionList.length > currentQuestionIndex + 1){
-        nextButton.classList.remove('hide')
+        nextButton.classList.remove('hide');
     }
     else{
-        restartButton.classList.remove('hide')
+        restartButton.classList.remove('hide');
     }
     
     createFlashCard()
 }
 
 function setStatusClass(element, correct){
-    clearStatusClass(element)
+    clearStatusClass(element);
     if (correct){
-        element.classList.add('correct')
+        element.classList.add('correct');
+        removeQuestion();
     }
     else{
-        element.classList.add('wrong')
+        element.classList.add('wrong');
     }
 }
 
 function clearStatusClass(element){
-    element.classList.remove('correct')
-    element.classList.remove('wrong')
+    element.classList.remove('correct');
+    element.classList.remove('wrong');
 }
 
 function removeFlashCard(){
@@ -245,6 +246,16 @@ function resetWatch(){
     document.getElementById('hr').innerHTML = "00";
     document.getElementById('min').innerHTML = "00";
     document.getElementById('sec').innerHTML = "00";
+}
+
+function removeQuestion(){
+    correctAnswers.push(questionList[currentQuestionIndex]);
+    //questionList.splice(currentQuestionIndex);
+    if (currentQuestionIndex > questionList.length){
+        currentQuestionIndex--;
+    }
+    console.log(currentQuestionIndex);
+    console.log(correctAnswers[currentQuestionIndex])
 }
 
 const questions = [
@@ -396,3 +407,5 @@ const questions = [
         flashcard: "Renault is no longer in Formula 1. Their last year they had Daniel Riccardo and another driver."
     }
 ]
+
+var correctAnswers = [];
