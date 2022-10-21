@@ -129,6 +129,7 @@ function setPreviousQuestion(){
 // show user the current question
 function showQuestion(question){
     questionElement.innerText = question.question;
+    document.body.style.setProperty("background-image", "url(" + question.picture + ")");
     question.answers.forEach(answer => {
         const button = document.createElement('button')
         button.innerText = answer.text
@@ -227,7 +228,7 @@ function createStopWatch(){
 
         let newText = document.createElement("span");
         newText.id = "text";
-        newText.innerText = "Min "
+        newText.innerText = "m "
 
         document.getElementById("time").appendChild(newMin);
         document.getElementById("time").appendChild(newText);
@@ -239,7 +240,7 @@ function createStopWatch(){
         newSec.innerText = "00"
         let newText = document.createElement("span");
         newText.id = "text";
-        newText.innerText = "Sec"
+        newText.innerText = "s"
 
         document.getElementById("time").appendChild(newSec);
         document.getElementById("time").appendChild(newText);
@@ -315,7 +316,8 @@ const questions = [
             {text: 'Sergio Perez', correct: false},
             {text: 'Sebastian Vettel', correct: false}
         ],
-        flashcard: "Max Verstappen won the champtionship in a very controversial way in 2021. His main rival was Lewis Hamilton who he beat by 8 points."
+        flashcard: "Max Verstappen won the champtionship in a very controversial way in 2021. His main rival was Lewis Hamilton who he beat by 8 points.",
+        picture: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%3Fid%3DOIP.6nf6fF7zHZkMKfxmDjBcEgHaE8%26pid%3DApi&f=1&ipt=de5baf8d1c986ded17b246676660d9667eb5d3b51567bc1d05f31ea42b7c93cd&ipo=images"
     },
     {
         question: 'Who holds the NBA single season record for Assists?',
@@ -325,7 +327,8 @@ const questions = [
             {text: 'Chris Paul', correct: false},
             {text: 'Oscar Robertson', correct: false}
         ],
-        flashcard: "John Stockton holds the single-season assist record by over 3,500 assists. The next closes is Jason Kidd at 12,091 assists. The closest active player is Chris Paul who is third on the leaderboard with 10,986 assists."
+        flashcard: "John Stockton holds the single-season assist record by over 3,500 assists. The next closes is Jason Kidd at 12,091 assists. The closest active player is Chris Paul who is third on the leaderboard with 10,986 assists.",
+        picture: "https://i.ytimg.com/vi/lC1Dk9vNo6g/maxresdefault.jpg"
     },
     {
         question: 'Who holds the MLB single season record for homeruns?',
@@ -335,7 +338,8 @@ const questions = [
             {text: 'Hank Aaron', correct: false},
             {text: 'Ken Griffey Jr.', correct: false}
         ],
-        flashcard: "Barry Bonds holds the single-season homerun record, however he was using PED's at the time. Many people consider his record invalid. The player with the second most is Hank Aaron with 755 homeruns. He has made it very clear that he is extremely against steroids."
+        flashcard: "Barry Bonds holds the single-season homerun record, however he was using PED's at the time. Many people consider his record invalid. The player with the second most is Hank Aaron with 755 homeruns. He has made it very clear that he is extremely against steroids.",
+        picture: "https://miro.medium.com/max/6400/1*Zka_Cxg0pdRzvMXzhtzXwA.jpeg"
     },
     {
         question: 'What is the diameter of a basketball hoop?',
@@ -346,7 +350,7 @@ const questions = [
             {text: '20 inches', correct: false}
         ],
         flashcard: "The diameter is 18 inches. This is just large enough to let 2 basketballs get stuck in the hoop.",
-
+        picture: "https://www.garedsports.com/sites/default/files/import/files/5018%2520pic_installed1.jpg"
     },
     {
         question: 'How many dimples does the average golf ball have?',
@@ -356,7 +360,8 @@ const questions = [
             {text: '378', correct: false},
             {text: '402', correct: false}
         ],
-        flashcard: "The average golf ball has 336, the best ball in golf currently is the Titleist Pro V1."
+        flashcard: "The average golf ball has 336, the best ball in golf currently is the Titleist Pro V1.",
+        picture: "https://sportsglory.com/wp-content/uploads/2019/12/titleistgolfballs-847-andrewtursky-min.jpg"
     },
     {
         question: 'What sporting event is held every year on memorial day?',
@@ -366,7 +371,8 @@ const questions = [
             {text: 'NBA Allstar Game', correct: false},
             {text: 'The SuperBowl', correct: false}
         ],
-        flashcard: "The Indianapoilis 500 happens every year on Memorial Day. The extended weekend makes it more enjoyable for spectators."
+        flashcard: "The Indianapoilis 500 happens every year on Memorial Day. The extended weekend makes it more enjoyable for spectators.",
+        picture: "https://www.baptistpress.com/wp-content/uploads/2021/05/Memorial-Day-iStock.jpg"
     },
     {
         question: 'How long is an Olympic-sized swimming pool?',
@@ -376,7 +382,8 @@ const questions = [
             {text: '48 meters', correct: false},
             {text: '52 meters', correct: false}
         ],
-        flashcard: "An Olympic swimming pool is 50 meters long. That is a very large pool!"
+        flashcard: "An Olympic swimming pool is 50 meters long. That is a very large pool!",
+        picture: "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.emtv.com.pg%2Fwp-content%2Fuploads%2F2016%2F07%2F2016-07-23T010434Z_1_LYNXNPEC6M00W_RTROPTP_4_OLYMPICS-RIO-SWIMMING-POOL.jpg&f=1&nofb=1&ipt=ef043e9bab3368615766d249d71ade5792364a14bb319433ba8d869394916629&ipo=images"
     },
     {
         question: 'How many defensive players are in the field during a baseball game?',
@@ -386,7 +393,8 @@ const questions = [
             {text: '10', correct: false},
             {text: '11', correct: false}
         ],
-        flashcard: "There are 9 players on the baseball field at once. The positions go as follows: Pitcher, Catcher, First Base, Second Base, Third Base, Shortstop, Left Field, Center Field, Right Field."
+        flashcard: "There are 9 players on the baseball field at once. The positions go as follows: Pitcher, Catcher, First Base, Second Base, Third Base, Shortstop, Left Field, Center Field, Right Field.",
+        picture: "https://alexandercityal.gov/sites/default/files/imageattachments/sportplex/page/2461/dji_0006_0.jpg"
     },
     {
         question: 'What is the object hit in Badminton called?',
@@ -394,7 +402,8 @@ const questions = [
             {text: 'Shuttlecock', correct: true},
             {text: 'Badminton Ball', correct: false}
         ],
-        flashcard: "It is called a shuttlecock. I always thought it was called a birdie!"
+        flashcard: "It is called a shuttlecock. I always thought it was called a birdie!",
+        picture: "https://togetheractive.org/wp-content/uploads/2015/06/shutterstock_263124545-e1442317843954.jpg"
     },
     {
         question: 'How much does an NFL football weigh?',
@@ -404,7 +413,8 @@ const questions = [
             {text: '0.8 pounds', correct: false},
             {text: '1.5 pounds', correct: false}
         ],
-        flashcard: "A football is 1 pound. Unless you are Tom Brady in the Superbowl."
+        flashcard: "A football is 1 pound. Unless you are Tom Brady in the Superbowl.",
+        picture: "https://www.nj.com/resizer/kBzSTFi0AQ3XpTlR9T54-GIi0do=/1200x0/advancelocal-adapter-image-uploads.s3.amazonaws.com/image.nj.com/home/njo-media/width2048/img/super_bowl_blog/photo/wilson-footballsjpg-0800528ed08622c3.jpg",
     },
     {
         question: 'How far is the NBA 3-point line?',
@@ -414,7 +424,8 @@ const questions = [
             {text: '24 feet 6 inches', correct: false},
             {text: '25 feet', correct: false}
         ],
-        flashcard: "The 3 point line is 23 feet 9 inches. Which is 4 feet further than college. This is why so many college players struggle shooting threes once they make it to the NBA."
+        flashcard: "The 3 point line is 23 feet 9 inches. Which is 4 feet further than college. This is why so many college players struggle shooting threes once they make it to the NBA.",
+        picture: "https://sa.kapamilya.com/absnews/abscbnnews/media/2020/news/09/30/court3.jpg"
     },
     {
         question: 'Who is the all time NBA points leader?',
@@ -424,7 +435,8 @@ const questions = [
             {text: 'Michael Jordan', correct: false},
             {text: 'Tim Duncan', correct: false}
         ],
-        flashcard: "Kareem Abdul-Jabbar is the all time leader in points. He is about 1,200 points ahead of Lebron James who is closing in quickly. He will most likely pass him by the end of the 2022-2023 season."
+        flashcard: "Kareem Abdul-Jabbar is the all time leader in points. He is about 1,200 points ahead of Lebron James who is closing in quickly. He will most likely pass him by the end of the 2022-2023 season.",
+        picture: "https://s.yimg.com/uu/api/res/1.2/RD09DXTSMbjunbh.8MGN4w--~B/aD0zNDU2O3c9NTE4NDtzbT0xO2FwcGlkPXl0YWNoeW9u/https://img.huffingtonpost.com/asset/5cc0f0a92400003600378121.jpeg"
     },
     {
         question: 'Which team bats first in baseball?',
@@ -432,7 +444,8 @@ const questions = [
             {text: 'Away Team', correct: true},
             {text: 'Home Team', correct: false}
         ],
-        flashcard: "The away team bats first in baseball. This gives the home team the last chance to bat if they are losing the game."
+        flashcard: "The away team bats first in baseball. This gives the home team the last chance to bat if they are losing the game.",
+        picture: "https://static.seattletimes.com/wp-content/uploads/2021/03/03172021_julio_123543-2048x1421.jpg"
     },
     {
         question: 'What sport is considered the \"King of sports\"?',
@@ -442,7 +455,8 @@ const questions = [
             {text: 'Basketball', correct: false},
             {text: 'Football', correct: false}
         ],
-        flashcard: "Soccer is considered to be the King of sports. About 250 million people play the sport world wide. For the world cup, there often well over 1 billion viewers."
+        flashcard: "Soccer is considered to be the King of sports. About 250 million people play the sport world wide. For the world cup, there often well over 1 billion viewers.",
+        picture: "https://www.otacfitness.com/wp-content/uploads/2018/08/Sports-and-Athletes-Website-Header.png"
     },
     {
         question: 'Which of the following is no longer a Formula 1 team?',
@@ -452,7 +466,8 @@ const questions = [
             {text: 'Mercedes', correct: false},
             {text: 'Alpine', correct: false}
         ],
-        flashcard: "Renault is no longer in Formula 1. They left in 2020 after they had a number of years struggling for success. Their last year they had Daniel Riccardo and Estaban Ocon as their drivers."
+        flashcard: "Renault is no longer in Formula 1. They left in 2020 after they had a number of years struggling for success. Their last year they had Daniel Riccardo and Estaban Ocon as their drivers.",
+        picture: "https://www.motormemos.com/wp-content/uploads/2021/03/PRI_182213602.jpg"
     }
 ]
 
